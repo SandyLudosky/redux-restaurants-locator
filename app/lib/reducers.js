@@ -18,16 +18,17 @@ function visibilityFilter(state = SHOW_ALL, action) {
   }
 }
 
-function restaurants(state = [], action) {
+function restaurants(state = initialState, action) {
   switch (action.type) {
     case SAVE_LIST: return action.results
     default: return state
   }
 }
 
-const restaurantsApp = combineReducers({
-  visibilityFilter,
-  restaurants
-})
-
+const restaurantsApp = (state = [], action) => {
+  return {
+    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+    restaurants: restaurants(state.restaurants, action)
+  }
+}
 export default restaurantsApp

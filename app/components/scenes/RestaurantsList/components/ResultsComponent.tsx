@@ -2,19 +2,19 @@
 import React from "react";
 import { FlatList, Text, View, StyleSheet } from 'react-native'
 import { IRestaurant } from "../../../../models/restaurant";
+import { data } from '../../../../config/data'
 
-const Item = (fruit: IRestaurant) => {
-    const { name, id} = fruit
+const Item = (restaurant: IRestaurant) => {
+    const { name, id } = restaurant
     return (
       <View style={styles.item}>
         <Text key={id} style={styles.title}>{name}</Text>
       </View>)
 }
   
-const ResultsComponent = (props: any) => {
-  const { dataSource } = props
+const ResultsComponent = ({ restaurants }: any) => {
   return(<FlatList
-    data={dataSource}
+    data={restaurants}
     renderItem={({ item }) => (<Item {...item}/>)}
     keyExtractor={(item: IRestaurant) => item.id}/>)
 }
