@@ -8,8 +8,8 @@ const Item = (restaurant: any) => {
     const { navigate } = useNavigation();
     const { name, id } = restaurant
     const navigateTo = (restaurant: IRestaurant) => {
-      Alert.alert('Map not supported yet! coming soon! ⚠️git')
-    // navigate('Map', { restaurant })
+      //Alert.alert('Map not supported yet! coming soon! ⚠️git')
+      navigate('Map', { restaurant })
     }
     return (
       <TouchableOpacity onPress={() => navigateTo(restaurant)} > 
