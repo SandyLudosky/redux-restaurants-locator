@@ -2,8 +2,6 @@ import React from "react";
 import { FlatList, Text, View, StyleSheet, Switch, TouchableOpacity, Alert} from 'react-native'
 import { IRestaurant } from "../../../../models/restaurant"
 import { useNavigation } from 'react-navigation-hooks'
-import { Accessory } from '../../../atoms'
-
 
 const Item = (restaurant: any) => {
     const { navigate } = useNavigation();
