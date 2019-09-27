@@ -44,7 +44,7 @@ export default class MapScreen extends Component<NavigationProps, State> {
         const latitude = parseFloat(lat);
         const longitude = parseFloat(lng);
         const northeastLat = parseFloat(northeast.latitude);
-        const southwestLat = parseFloat(southwest.latitude);
+        const southwestLat = parseFloat(southwest.latitude);5
         const latDelta = northeastLat - southwestLat;
         const lngDelta = latDelta * ASPECT_RATIO;
         return (
@@ -56,8 +56,8 @@ export default class MapScreen extends Component<NavigationProps, State> {
             initialRegion={{
               latitude: latitude,
               longitude: longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
+              latitudeDelta: 0.001,
+              longitudeDelta: 0.003,
             }}  >
                 <Marker
                 coordinate={{latitude: lat,
