@@ -5,8 +5,6 @@ import { IRestaurant } from "../../../../models/restaurant";
 interface RestaurantProps {
     restaurant: IRestaurant;
 }
-
-
 const getInfo = (restaurant: IRestaurant) => {
     const {location } = restaurant.geometry
     const {lng , lat} = location

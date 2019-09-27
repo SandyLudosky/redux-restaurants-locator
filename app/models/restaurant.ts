@@ -8,7 +8,6 @@ export interface IRestaurant {
     opening_hours: {open_now: boolean}
     vincinity: string
 }
-
 export interface Geometry {
     location: {
         lat: number

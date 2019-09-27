@@ -7,11 +7,6 @@ import {
     NavigationScreenProp,
     NavigationState,
   } from 'react-navigation'
-
-const { width, height } = Dimensions.get('window');
-const SCREEN_WIDTH = width;
-const SCREEN_HEIGHT = height;
-
 export interface State {
     restaurant: IRestaurant
     region: any
