@@ -11,9 +11,8 @@ const Item = (restaurant: IRestaurant) => {
         <Text key={id} style={styles.title}>{name}</Text>
       </View>)
 }
-
 const ResultsComponent = ({ restaurants, isOpened, onSwitch }: any) => {
-
+  const resultsAvailable = restaurants.length > 0
   return(
   <View style={{flex: 1, flexDirection: 'column'}}>
     <View style={styles.switch}>
@@ -22,10 +21,13 @@ const ResultsComponent = ({ restaurants, isOpened, onSwitch }: any) => {
                 value={isOpened}
                 trackColor={{ false: '#ccc', true: '#16a085'}} />
     </View>
+    {resultsAvailable ?
     <FlatList
-      data={restaurants}
-      renderItem={({ item }) => (<Item {...item}/>)}
-      keyExtractor={(item: IRestaurant) => item.id}/>
+    data={restaurants}
+    renderItem={({ item }) => (<Item {...item}/>)}
+    keyExtractor={(item: IRestaurant) => item.id}/> :
+    <Text style={styles.noRestaurants}>No Restaurants open now :(</Text>
+    }
   </View>)
 }
 
@@ -34,7 +36,6 @@ const styles = StyleSheet.create({
        marginTop: 20,
        marginBottom: 20, 
        marginRight: 20,
-
        flexDirection: 'row',
        justifyContent: 'flex-end'
     },
@@ -43,6 +44,11 @@ const styles = StyleSheet.create({
       fontWeight: '600',
       paddingTop: 5,
       color: '#333'
+    },
+    noRestaurants: {
+      fontSize: 18, 
+      marginLeft: 20,
+      color: '#666'
     },
     item: {
       backgroundColor: '#ecf0f1',
