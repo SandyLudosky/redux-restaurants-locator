@@ -2,12 +2,12 @@ import React from "react";
 import { FlatList, Text, View, StyleSheet, Switch, TouchableOpacity, Alert} from 'react-native'
 import { IRestaurant } from "../../../../models/restaurant"
 import { useNavigation } from 'react-navigation-hooks'
+import { SwitchOpen } from '../../../atoms'
 
 const Item = (restaurant: any) => {
     const { navigate } = useNavigation();
     const { name, id, opening_hours } = restaurant
     const navigateTo = (restaurant: IRestaurant) => {
-      //Alert.alert('Map not supported yet! coming soon! ⚠️git')
       navigate('Map', { restaurant })
     }
     return (
@@ -21,40 +21,28 @@ const Item = (restaurant: any) => {
       </TouchableOpacity>
     )
 }
+
+const Restaurants = ({items, onPress}: any) => {
+  const resultsAvailable = items.length > 0
+    if (resultsAvailable) {
+      return(<FlatList
+        data={items}
+        renderItem={({ item }) => (<Item {...item}/>)}
+      keyExtractor={(item: IRestaurant) => item.id}/> )
+    } else {
+      return(<Text style={styles.noRestaurants}>No Restaurants open now :(</Text>) 
+    }
+}
+
 const ResultsComponent = ({ restaurants, isOpened, onSwitch, onPress }: any) => {
-  const resultsAvailable = restaurants.length > 0
   return(
   <View style={{flex: 1, flexDirection: 'column'}}>
-    <View style={styles.switch}>
-        <Text style={styles.text}>open now : </Text>
-        <Switch onValueChange={(e) => onSwitch(e)} 
-                value={isOpened}
-                trackColor={{ false: '#ccc', true: '#16a085'}} />
-    </View>
-    {resultsAvailable ?
-    <FlatList
-    data={restaurants}
-    renderItem={({ item }) => (<Item {...item}/>)}
-    keyExtractor={(item: IRestaurant) => item.id}/> :
-    <Text style={styles.noRestaurants}>No Restaurants open now :(</Text>
-    }
+    <SwitchOpen isOpened={isOpened} onSwitch={onSwitch} />
+    <Restaurants items={restaurants} onPress={onPress} />
   </View>)
 }
 
 const styles = StyleSheet.create({
-    switch: {
-       marginTop: 20,
-       marginBottom: 20, 
-       marginRight: 20,
-       flexDirection: 'row',
-       justifyContent: 'flex-end'
-    },
-    text: {
-      fontSize: 18, 
-      fontWeight: '600',
-      paddingTop: 5,
-      color: '#333'
-    },
     open: {
       color: '#2ecc71',
       fontWeight: '300',
