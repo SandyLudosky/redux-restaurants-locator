@@ -1,8 +1,7 @@
- const Constants = {
+const Constants = {
     BASE_URL: 'https://maps.googleapis.com/maps/api/place/',
     API_KEY: 'AIzaSyCZ5SVtP6EJhcv741ZbJA7oEJHuPOWFSwQ'
 }
-
 const Paths = {
     NEARBY_SEARCH: 'nearbysearch/json'
 }

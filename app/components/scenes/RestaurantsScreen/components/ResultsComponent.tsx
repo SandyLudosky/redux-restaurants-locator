@@ -21,7 +21,6 @@ const Item = (restaurant: any) => {
       </TouchableOpacity>
     )
 }
-
 const Restaurants = ({items, onPress}: any) => {
   const resultsAvailable = items.length > 0
     if (resultsAvailable) {
@@ -33,7 +32,6 @@ const Restaurants = ({items, onPress}: any) => {
       return(<Text style={styles.noRestaurants}>No Restaurants open now :(</Text>) 
     }
 }
-
 const ResultsComponent = ({ restaurants, isOpened, onSwitch, onPress }: any) => {
   return(
   <View style={{flex: 1, flexDirection: 'column'}}>

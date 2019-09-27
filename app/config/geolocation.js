@@ -1,10 +1,8 @@
 import Geolocation from '@react-native-community/geolocation';
-
 const config = {
     skipPermissionRequests: false, 
     authorizationLevel: "whenInUse"
 }
-
 const getCurrentPosition = () => {
     Geolocation.setRNConfiguration(config);
     Geolocation.requestAuthorization();
