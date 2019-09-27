@@ -35,22 +35,35 @@ export default class MapScreen extends Component<NavigationProps, State> {
     }
     render() {
         const params = this.props.navigation.state.params, restaurant = params.restaurant
+        const {location, viewport } = restaurant.geometry
+        const {lng , lat} = location
+        const { northeast, southwest } = viewport
+        const { width, height } = Dimensions.get('window');
+        const ASPECT_RATIO = width / height;
+
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lng);
+        const northeastLat = parseFloat(northeast.latitude);
+        const southwestLat = parseFloat(southwest.latitude);
+        const latDelta = northeastLat - southwestLat;
+        const lngDelta = latDelta * ASPECT_RATIO;
         return (
             <View>
             <MapView
             style={styles.map}
+            showsUserLocation={true}
+            showsScale={true}
             initialRegion={{
-              latitude: restaurant.geometry.location.lat,
-              longitude: restaurant.geometry.location.lng,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}>
-                 
-                {/* <Marker
-                coordinate={this.state.marker}
-                title={this.state.restaurant.name}
-                description={this.state.restaurant.vincinity}
-                />)) */}
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            }}  >
+                <Marker
+                coordinate={{latitude: lat,
+                longitude: lng}}
+                title={restaurant.name}
+                description={restaurant.vincinity} />   
             </MapView>
         </View>
         );
