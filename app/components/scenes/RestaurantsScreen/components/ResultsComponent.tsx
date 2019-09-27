@@ -2,11 +2,12 @@ import React from "react";
 import { FlatList, Text, View, StyleSheet, Switch, TouchableOpacity, Alert} from 'react-native'
 import { IRestaurant } from "../../../../models/restaurant"
 import { useNavigation } from 'react-navigation-hooks'
+import { Accessory } from '../../../atoms'
 
 
 const Item = (restaurant: any) => {
     const { navigate } = useNavigation();
-    const { name, id } = restaurant
+    const { name, id, opening_hours } = restaurant
     const navigateTo = (restaurant: IRestaurant) => {
       //Alert.alert('Map not supported yet! coming soon! ⚠️git')
       navigate('Map', { restaurant })
@@ -14,6 +15,9 @@ const Item = (restaurant: any) => {
     return (
       <TouchableOpacity onPress={() => navigateTo(restaurant)} > 
         <View style={styles.item}>
+          { (opening_hours !=null) &&
+              opening_hours.open_now ? <Text style={styles.open}>open now</Text> : null
+          }
           <Text key={id} style={styles.title}>{name}</Text>
         </View>
       </TouchableOpacity>
@@ -52,6 +56,11 @@ const styles = StyleSheet.create({
       fontWeight: '600',
       paddingTop: 5,
       color: '#333'
+    },
+    open: {
+      color: '#2ecc71',
+      fontWeight: '300',
+      fontSize: 11
     },
     noRestaurants: {
       fontSize: 18, 
