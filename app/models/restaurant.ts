@@ -1,8 +1,9 @@
 export interface IRestaurant {
     id: string
-    name:string
-    opening_hours: { open_now: boolean }
-    price_level: number
+    name: string
     rating: number
-    vicinity: string
+    price_level: number
+    types: string[]
+    opening_hours: {open_now: boolean}
+    vincinity: string
 }

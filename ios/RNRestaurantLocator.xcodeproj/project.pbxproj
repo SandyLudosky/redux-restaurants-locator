@@ -161,7 +161,6 @@
 				4DB64B0CE7EBB93922C9BB78 /* Pods-RNRestaurantLocatorTests.debug.xcconfig */,
 				369CAD97CA66F65D73C92CE0 /* Pods-RNRestaurantLocatorTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -308,6 +307,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);

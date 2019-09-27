@@ -23,14 +23,13 @@ const getFilter = (filter: string): boolean  => {
 const mapStateToProps = (state: any) => {
   return {
     restaurants: getVisibleRestaurants(state.restaurants, state.visibilityFilter),
-    open: getFilter(state.visibilityFilter)
+    isOpened: getFilter(state.visibilityFilter)
   }
 }
 const mapDispatchToProps = (dispatch: any) => {
   const { SHOW_ALL, SHOW_OPEN } = VisibilityFilters
   return {
     onSwitch:(e:boolean) => { 
-      console.log(e)
       dispatch(setVisibilityFilter( e ? SHOW_OPEN : SHOW_ALL)) 
     }
   }

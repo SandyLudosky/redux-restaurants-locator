@@ -12,14 +12,14 @@ const Item = (restaurant: IRestaurant) => {
       </View>)
 }
 
-const ResultsComponent = ({ restaurants, open, onSwitch }: any) => {
+const ResultsComponent = ({ restaurants, isOpened, onSwitch }: any) => {
 
   return(
   <View style={{flex: 1, flexDirection: 'column'}}>
     <View style={styles.switch}>
         <Text style={styles.text}>open now : </Text>
         <Switch onValueChange={(e) => onSwitch(e)} 
-                value={open}
+                value={isOpened}
                 trackColor={{ false: '#ccc', true: '#16a085'}} />
     </View>
     <FlatList
