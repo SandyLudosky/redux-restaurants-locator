@@ -1,17 +1,25 @@
-  
 import React from "react";
-import { FlatList, Text, View, StyleSheet, Switch } from 'react-native'
-import { IRestaurant } from "../../../../models/restaurant";
-import { VisibilityFilters } from '../../../../lib/actions'
+import { FlatList, Text, View, StyleSheet, Switch, TouchableOpacity, Alert} from 'react-native'
+import { IRestaurant } from "../../../../models/restaurant"
+import { useNavigation } from 'react-navigation-hooks'
 
-const Item = (restaurant: IRestaurant) => {
+
+const Item = (restaurant: any) => {
+    const { navigate } = useNavigation();
     const { name, id } = restaurant
+    const navigateTo = (restaurant: IRestaurant) => {
+      Alert.alert('Map not supported yet! coming soon! ⚠️')
+    // navigate('Map', { restaurant })
+    }
     return (
-      <View style={styles.item}>
-        <Text key={id} style={styles.title}>{name}</Text>
-      </View>)
+      <TouchableOpacity onPress={() => navigateTo(restaurant)} > 
+        <View style={styles.item}>
+          <Text key={id} style={styles.title}>{name}</Text>
+        </View>
+      </TouchableOpacity>
+    )
 }
-const ResultsComponent = ({ restaurants, isOpened, onSwitch }: any) => {
+const ResultsComponent = ({ restaurants, isOpened, onSwitch, onPress }: any) => {
   const resultsAvailable = restaurants.length > 0
   return(
   <View style={{flex: 1, flexDirection: 'column'}}>
