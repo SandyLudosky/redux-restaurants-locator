@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import Animatable from 'react-native-animatable'
 import LoadingComponent from './LoadingComponent'
 import EmptyComponent from './EmptyComponent'
 
@@ -7,9 +8,13 @@ function ListWithLoading(Component: FunctionComponent) {
   return function WihLoadingComponent({ ...props }: any) {
     const { dataSource, isFetching, text, onPress } = props
     if (!isFetching) {
-      return  dataSource.length != 0  ? <Component {...props} onPress={onPress}/> : <EmptyComponent text={text}/>
+      return  dataSource.length != 0  ? 
+          <Animatable.View animation="fadeIn" duration={2}> 
+            <Component {...props} onPress={onPress}/>
+          </ Animatable.View> : 
+          <EmptyComponent text={text}/>
   }  else {
-    return <LoadingComponent/>;
+    return <LoadingComponent/>
   }
   }
 }

@@ -1,5 +1,6 @@
 import React from "react";
-import { FlatList, Text, View, StyleSheet, Switch, TouchableOpacity, Alert} from 'react-native'
+import { FlatList, Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import TransitionView from 'react-native-animatable'
 import { IRestaurant } from "../../../../models/restaurant"
 import { useNavigation } from 'react-navigation-hooks'
 import { SwitchOpen } from '../../../atoms'
@@ -11,14 +12,14 @@ const Item = (restaurant: any) => {
       navigate('Map', { restaurant })
     }
     return (
-      <TouchableOpacity onPress={() => navigateTo(restaurant)} > 
-        <View style={styles.item}>
-          { (opening_hours !=null) &&
-              opening_hours.open_now ? <Text style={styles.open}>open now</Text> : null
-          }
-          <Text key={id} style={styles.title}>{name}</Text>
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigateTo(restaurant)} > 
+          <View style={styles.item}>
+            { (opening_hours !=null) &&
+                opening_hours.open_now ? <Text style={styles.open}>open now</Text> : null
+            }
+            <Text key={id} style={styles.title}>{name}</Text>
+          </View>
+        </TouchableOpacity>
     )
 }
 const Restaurants = ({items, onPress}: any) => {
