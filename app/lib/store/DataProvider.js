@@ -18,6 +18,7 @@ export const VisibilityFilter = {
 
 export const DataContext = createContext({
   data: [],
+  dataHolder: [],
   filter:'',
   search: '',
   setData: data => {},
@@ -34,16 +35,21 @@ export const DataContext = createContext({
 class DataProvider extends Component {
   state = {
     data: [], 
+    dataHolder: [],
     filter: '',
     search: '',
-    setData: data => this.setState({ data: data}),
-    setFilter: filter => this.setState({ data: this.get(filter), filter: filter}),
+    setData: data => this.setState({ data: data }),
+    setFilter: filter => this.setState({ dataHolder: this.get(filter), filter: filter}),
     setSearch: text => this.setState({ search: text })
   };
 
   get = (filter) => {
+    console.log('set filter ' + filter)
     switch(filter) {
-        case VisibilityFilter.SHOW_ALL: return this.state.data
+        case VisibilityFilter.SHOW_ALL: return this.state.data.map(restaurant => {
+          console.log(restaurant)
+          return restaurant
+        })
         case VisibilityFilter.SHOW_OPEN: return this.state.data.filter(restaurant => {
             console.log(this.state.data)
             return restaurant.opening_hours ? restaurant.opening_hours.open_now : false
