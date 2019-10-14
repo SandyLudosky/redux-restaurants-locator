@@ -1,13 +1,14 @@
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 import { API } from '../../../services/index'
+import store from '../../../lib/store'
 import { getCurrentPosition } from '../../../config/geolocation'
-import { StyleSheet, View } from 'react-native';
+import { saveList } from '../../../lib/actions'
+import { StyleSheet, View, Button } from 'react-native';
 import { IRestaurant } from '../../../models/restaurant'
 import ListWithLoading from './components/ListWithLoading'
-import ResultsComponent from './components/ResultsComponent'
+import ResultsList from './containers/ResultsList'
 import { Coordinate } from '../../../models/coordinates';
-import { DataContext, VisibilityFilter } from '../../../lib/store/DataProvider'
-
+import * as helpers from '../../../utils/helpers'
 import {
   NavigationParams,
   NavigationScreenProp,
@@ -35,6 +36,7 @@ export default class RestaurantsScreen extends Component<NavigationProps, State>
     search: '',
     text: ''
   }
+
   componentDidMount() {
     getCurrentPosition()
       .then((position: any) => {
@@ -44,13 +46,13 @@ export default class RestaurantsScreen extends Component<NavigationProps, State>
       .catch(e => console.log(e))
   }
   fetch = (coordinates: Coordinate) => {
-    const dataContext = this.context;
     this.setState({ isFetching: true })
     API.searchRestaurants(coordinates)
       .then((restaurants: any) => {
-        this.setState({isFetching: false })
-        dataContext.setData(restaurants)
-        dataContext.setFilter(VisibilityFilter.SHOW_ALL)
+        this.setState({ dataSource: restaurants, isFetching: false }, () => {
+          this.setState({ dataHolder: this.state.dataSource })
+          store.dispatch(saveList(restaurants))
+        })
       }).catch((err: Error) => console.log(err))
   }
 
@@ -59,28 +61,24 @@ export default class RestaurantsScreen extends Component<NavigationProps, State>
     this.props.navigation.navigate('Map', { restaurant })
   }
   onTextChange = (text: string) => {
-    const dataContext = this.context
+    const filtered = helpers.filterResults(text, this.state.dataSource)
     const emptyResultsText = `Sorry no results for "${text}" :()`
-    const { SHOW_ALL, SHOW_FILTERED } = VisibilityFilter
-    dataContext.setSearch(text)
-    dataContext.setFilter(!text.length ? SHOW_ALL : SHOW_FILTERED)
-    this.setState(({ text: emptyResultsText, search: text}))
+    this.setState(({ dataSource: !text.length ? this.state.dataHolder : filtered, text: emptyResultsText, search: text }), () => {
+      store.dispatch(saveList(filtered))
+    })
+    if (!text.length) { this.setState({}) }
   }
   onRefresh = () => {
-    const dataContext = this.context
     this.fetch(this.state.coordinates)
     this.setState({ search: '' })
-    dataContext.setSearch('')
   }
   render() {
-    const RestaurantsList = ListWithLoading(ResultsComponent);
-    const { search, isFetching, text } = this.state
+    const RestaurantsList = ListWithLoading(ResultsList);
+    const { dataSource, search, isFetching, text } = this.state
     return (
       <View style={styles.MainContainer}>
         <SearchHeader search={search} onChange={this.onTextChange} onRefresh={this.onRefresh} />
-        <DataContext.Consumer>
-        { value => <RestaurantsList dataSource={value.dataHolder} isFetching={isFetching} text={text} onPress={this.onPress} />}
-        </DataContext.Consumer>
+        <RestaurantsList dataSource={dataSource} isFetching={isFetching} text={text} onPress={this.onPress} />
       </View>
     );
   }
@@ -110,4 +108,3 @@ const styles = StyleSheet.create({
     padding: 10
   }
 });
-RestaurantsScreen.contextType = DataContext;

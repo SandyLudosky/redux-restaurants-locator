@@ -1,76 +1,69 @@
+import React  from 'react';
+import { Button, View, StyleSheet, Text, TextInput, Switch } from 'react-native';
+import { Icon } from 'react-native-elements'
 
-import React, { createContext, Component } from "react"; // on importe createContext qui servira à la création d'un ou plusieurs contextes
-import * as helpers from '../../utils/helpers'
-/**
- * `createContext` contient 2 propriétés :
- * `Provider` et `Consumer`. Nous les rendons accessibles
- * via la constante `UserContext` et on initialise une
- * propriété par défaut "name" qui sera une chaîne vide.
- * On exporte ce contexte afin qu'il soit exploitable par
- * d'autres composants par la suite via le `Consumer`
- */
-
-export const VisibilityFilter = {
-  SHOW_ALL : 'SHOW_ALL', 
-  SHOW_OPEN: 'SHOW_OPEN', 
-  SHOW_FILTERED: 'SHOW_FILTERED'
+const FilterLink = (props: any) => {
+    const { filter, children, setActive } = props
+    return (<Button title={children} onPress={() => setActive(filter)} />)
 }
 
-export const DataContext = createContext({
-  data: [],
-  filter:'',
-  search: '',
-  setData: data => {},
-  setFilter: filter => {},
-  setSearch: text => {}
-});
+const SwitchOpen = ({isOpened, onSwitch}: any) => {
+    return(<View style={styles.switch}>
+          <Text style={styles.text}>open now : </Text>
+          <Switch onValueChange={(e) => onSwitch(e)} 
+                  value={isOpened}
+                  trackColor={{ false: '#ccc', true: '#16a085'}} />
+      </View>)
+  }
 
-/**
- * la classe Provider fera office de... Provider (!)
- * en englobant son enfant direct
- * dans le composant éponyme. De cette façon, ses values
- * seront accessibles de manière globale via le `Consumer`
- */
-class DataProvider extends Component {
-  state = {
-    data: [], 
-    filter: '',
-    search: '',
-    setData: data => this.setState({ data: data}),
-    setFilter: filter => this.setState({ data: this.get(filter), filter: filter}),
-    setSearch: text => this.setState({ search: text })
-  };
+const SearchInput = ({search, onChange}:any) => {
+    return(
+    <TextInput
+        style={styles.textInputStyleClass}
+        onChangeText={(text) => onChange(text)}
+        value={search}
+        underlineColorAndroid='transparent'
+        placeholder="Search Restaurant ..."
+      />
+      )
+}
+/* 
+Component namespacing 
+*/
 
-  get = (filter) => {
-    switch(filter) {
-        case VisibilityFilter.SHOW_ALL: return this.state.data
-        case VisibilityFilter.SHOW_OPEN: return this.state.data.filter(restaurant => {
-            console.log(this.state.data)
-            return restaurant.opening_hours ? restaurant.opening_hours.open_now : false
-        })
-        case VisibilityFilter.SHOW_FILTERED: return helpers.filterResults(this.state.search, this.state.data)
+/* accessory types for items in a list */
+const Accessory = ({ children}: any) => {children};
+Accessory.Open = ({style}: any) => <View><Icon style={styles.open} type='font-awesome' name='check-circle'/></View>;
+
+const styles = StyleSheet.create({
+    switch: {
+        marginTop: 20,
+        marginBottom: 20, 
+        marginRight: 20,
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
+    text: {
+        fontSize: 18, 
+        fontWeight: '600',
+        paddingTop: 5,
+        color: '#333'
+    },
+    textInputStyleClass: {
+        textAlign: 'center',
+        height: 40,
+        borderWidth: 1,
+        borderColor: '#7f8c8d',
+        borderRadius: 7,
+        backgroundColor: "#FFFFFF"
+    },
+    open: {
+        color: '#2ecc71'
     }
-  }
-  render() {
-    return (
-      /**
-       * la propriété value est très importante ici, elle rend
-       * le contenu du state disponible aux `Consumers` de l'application
-       */
-      <DataContext.Provider value={this.state}>
-        {this.props.children}
-      </DataContext.Provider>
-    );
-  }
+})
+export {
+    FilterLink,
+    SwitchOpen, 
+    SearchInput,
+    Accessory 
 }
-/**
- * HOC, qui se chargera d'injecter les propriétés de notre contexte
- * à n'importe quel composant qui l'appellera
- */
-export const withData = Component => props => (
-  <DataContext.Consumer>
-    {store => <Component {...props} {...store} />}
-  </DataContext.Consumer>
-)
-
-export default DataProvider;

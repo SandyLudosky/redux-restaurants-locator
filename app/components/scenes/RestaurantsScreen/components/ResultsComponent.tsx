@@ -1,6 +1,5 @@
 import React from "react";
 import { FlatList, Text, View, StyleSheet, TouchableOpacity } from 'react-native'
-import TransitionView from 'react-native-animatable'
 import { IRestaurant } from "../../../../models/restaurant"
 import { useNavigation } from 'react-navigation-hooks'
 import { SwitchOpen } from '../../../atoms'
